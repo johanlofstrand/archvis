@@ -1,0 +1,54 @@
+.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+#framework {
+  fill: green;
+}
+
+.link.framework {
+  stroke: green;
+}
+
+.link.dependency {
+  stroke: red;
+}
+
+.link.transative {
+	stroke: green;
+  stroke-dasharray: 0,2 1;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #333;
+  stroke-width: 2px;
+}
+
+text {
+  font: 16px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+.body {margin: 0 auto; }
+
+
+.container {
+  width: 90%;
+  margin: 0px auto;
+}
+
+h1, h3 {
+  font-weight: 200;
+  margin-bottom: 5px;
+}
+
+footer {
+  margin-top: 30px;
+  border-top: 1px solid #efefef;
+  padding-top: 20px;
+  font-style: italic;
+}
+

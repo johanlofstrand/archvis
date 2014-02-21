@@ -1,0 +1,136 @@
+<% include header %>
+
+<main role="main">
+<div class="container">
+
+<script type="text/javascript">
+	
+	var width = 1200,
+	height = 800;
+
+	var svg = d3.select("body").append("svg")
+	.attr({
+  	"width": '100%',
+  	"height": '100%'
+		})
+
+	var nodes = {};
+	var links = {};
+	var forceu;
+
+
+    	var parsed = <%-JSON.stringify(bbdata)%>
+	
+		if (parsed.links) {
+			links = parsed.links;
+		}
+		
+		var sonarnodes = parsed.sonarnodes;	
+
+ 		if (parsed.links) {
+			// Compute the distinct nodes from the links.
+			var nodeStyleS,nodeStyleT;
+			nodeStyleS=nodeStyleT='#ccc';
+			links.forEach(function(link) {
+
+				if (link.source.match('^svtlib')) {
+					nodeStyleS = '#FFFF00';
+					nodeStyleT = '#ccc';
+				}
+				else if(link.target.match('^svtlib')){
+					nodeStyleS = '#ccc';
+					nodeStyleT = '#FFFF00';	
+				}
+				else if (link.source.match('^svtlib') && link.target.match('^svtlib')) {
+					nodeStyleS = '#FFFF00';
+					nodeStyleT = '#FFFF00';	
+				}
+				else {
+					nodeStyleS=nodeStyleT='#ccc';
+				}
+
+			    link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, st: 5, nodeStyle: nodeStyleS});
+			
+				link.target = nodes[link.target] || (nodes[link.target] = {name: link.target, st: 5, nodeStyle: nodeStyleT});
+			});
+		}
+		if (sonarnodes) {
+			sonarnodes.forEach(function(sonarnode) {
+				if (sonarnode.loc) {
+					nodes[sonarnode.nodename].st = sonarnode.loc;
+				}
+			});
+		}
+
+		var force = d3.layout.force()
+		    .nodes(d3.values(nodes))
+		    .links(links)
+		    .size([width, height])
+		    .linkDistance(250)
+		    .charge(-1500)
+		    .on("tick", tick)
+		    .start();
+
+		 forceu = force;
+
+		// Per-type markers (pilarna), as they don't inherit styles.
+		svg.append("defs").selectAll("marker")
+		    .data(["framework", "dependency", "transative"])
+		  .enter().append("marker")
+		    .attr("id", function(d) { return d; })
+		    .attr("viewBox", "0 -5 10 10")
+		    .attr("refX", 15)
+		    .attr("refY", -1.5)
+		    .attr("markerWidth", 7)
+		    .attr("markerHeight", 7)
+		    .attr("orient", "auto")
+		  .append("path")
+		    .attr("d", "M0,-5L10,0L0,5");
+
+		var opacity = 1;
+		var path = svg.append("g").selectAll("path")
+		    .data(force.links())
+		    .enter().append("path")
+		    .attr("class", function(d) { return "link " + d.type; })
+		    .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
+
+		var circle = svg.append("g").selectAll("circle")
+		    .data(force.nodes())
+		    .enter().append("circle")
+		    .attr("r", function(d) { return d.st })
+		    .style("stroke", function(d) {return d.nodeStyle})
+		    .call(force.drag);
+
+		var text = svg.append("g").selectAll("text")
+		    .data(force.nodes())
+		  .enter().append("text")
+		    .attr("x", 12) //behövs för att få ut texten från noden.
+		    .attr("y", ".30em")
+		    .text(function(d) { return d.name });
+
+		// Use elliptical arc path segments to doubly-encode directionality.
+		function tick() {
+		  path.attr("d", linkArc);
+		  circle.attr("transform", transform);
+		  text.attr("transform", transform);
+		}
+
+		function linkArc(d) {
+		  var dx = d.target.x - d.source.x,
+		      dy = d.target.y - d.source.y,
+		      dr = Math.sqrt(dx * dx + dy * dy);
+		  return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+		}
+
+		function transform(d) {
+		  return "translate(" + d.x + "," + d.y + ")";
+		}
+
+
+
+</script>
+
+ </main>
+</div>
+
+<% include footer %>

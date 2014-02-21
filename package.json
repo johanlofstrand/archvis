@@ -1,0 +1,32 @@
+{
+  "name": "ServiceAnalyzer",
+  "description": "Service analyzer app - analyze our service - component architecture",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "~3.4.8",
+    "d3": "~3.4.1",
+    "bitbucket-api": "~0.0.6",
+    "async": "~0.2.10",
+    "ejs": "~0.8.5"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  },
+  "main": "web.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johanlofstrand/archvisualizer"
+  },
+  "author": "Johan Löfstrand",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johanlofstrand/archvisualizer/issues"
+  },
+  "homepage": "https://github.com/johanlofstrand/archvisualizer"
+}
