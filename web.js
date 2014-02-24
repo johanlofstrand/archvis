@@ -24,7 +24,7 @@ var sonarnodes =
 	{"nodename":"svtlib-messagechannel","loc":"5"},
 ]
 
-console.log('Web server started..., listening on %d', port);
+console.log('Web server started now..., listening on %d', port);
 
 
 app.get('/',function(req,res) {
