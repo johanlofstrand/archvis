@@ -24,12 +24,12 @@ var sonarnodes =
 	{"nodename":"svtlib-messagechannel","loc":"5"},
 ]
 
-console.log('Web server started, listening on %d', port);
+console.log('Web server started..., listening on %d', port);
 
 
 app.get('/',function(req,res) {
 	bbinit(function(ready) {
-		console.log("send bbdata");
+		console.log("sending bbdata!");
 		res.render("index.ejs",{bbdata:bbfulldata});
 	});
 })
